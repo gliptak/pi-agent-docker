@@ -1,41 +1,34 @@
-ARG PI_VERSION=0.72.0
-ARG EXTENSIONS="npm:pi-hashline-readmap npm:pi-extmgr npm:@juicesharp/rpiv-btw npm:@heart-of-gold/toolkit"
+ARG PI_VERSION=0.75.5
+ARG EXTENSIONS="npm:pi-hashline-readmap npm:pi-btw npm:pi-smart-fetch npm:@heart-of-gold/toolkit npm:pi-extmgr"
 
 FROM node:22-alpine
 
 ARG PI_VERSION
 ARG EXTENSIONS
 
-# Add edge/community temporarily for uv, ast-grep, nushell, etc. (not in stable Alpine repos)
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-    apk update && \
-    apk add --no-cache \
-        git \
-        curl \
-        ca-certificates \
-        ripgrep \
-        fd \
-        python3 \
-        git \
-        jq \
-        build-base \
-        openssh-client \
-        uv \
-        ast-grep \
-        nushell \
-        difftastic \
-        shellcheck \
-        yq \
-        scc \
-    && rm -rf /var/cache/apk/* && \
-    sed -i '/edge\/community/d' /etc/apk/repositories
+# Install OS dependencies with temporary edge repo for uv/ast-grep/nushell
+RUN apk add --no-cache \
+    --repository https://dl-cdn.alpinelinux.org/alpine/edge/community \
+    git \
+    curl \
+    ca-certificates \
+    ripgrep \
+    fd \
+    python3 \
+    git \
+    jq \
+    build-base \
+    openssh-client \
+    uv \
+    ast-grep \
+    nushell \
+    difftastic \
+    shellcheck \
+    yq \
+    scc
 
-# Pinned Pi agent install (system-wide as root)
-RUN npm install -g @mariozechner/pi-coding-agent@${PI_VERSION}
-
-# Copy install-pi-extensions.sh to known location
-COPY install-pi-extensions.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/install-pi-extensions.sh
+# Pinned Pi agent install
+RUN npm install -g @earendil-works/pi-coding-agent@${PI_VERSION}
 
 # Switch to node user for runtime
 USER node
@@ -46,4 +39,8 @@ ENV PATH="/home/node/.local/bin:${PATH}"
 ENV PI_SKIP_VERSION_CHECK=1
 ENV EXTENSIONS=${EXTENSIONS}
 
-CMD ["/bin/sh", "-c", "/usr/local/bin/install-pi-extensions.sh ${EXTENSIONS} && pi"]
+# Copy install-pi-extensions.sh to known location
+COPY --chown=node install-pi-extensions.sh /home/node/.local/bin/
+RUN chmod +x /home/node/.local/bin/install-pi-extensions.sh
+
+CMD ["/bin/sh", "-c", "install-pi-extensions.sh ${EXTENSIONS} && pi"]

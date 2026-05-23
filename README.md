@@ -6,7 +6,7 @@ Alpine‑based Docker wrapper for [Pi coding agent](https://pi.dev) with pre‑i
 
 Build:
 ```bash
-docker build --build-arg PI_VERSION=0.72.0 -t pi-alpine:latest .
+docker build --build-arg PI_VERSION=0.75.5 -t pi-alpine:latest .
 ```
 
 Run (maps host `~/.pi` config and extensions to `/home/node/.pi`):
@@ -21,7 +21,7 @@ docker run -it --rm -v ~/.pi:/home/node/.pi -v $(pwd):/work pi-alpine:latest
 ## Included Tools
 
 ### Core
-- `pi` – Pi coding agent (pinned via `PI_VERSION`; default 0.72.0)
+- `pi` – Pi coding agent (pinned via `PI_VERSION`)
 - `git` – Version control
 - `uv` – Python package manager (from Alpine edge/community)
 - `ripgrep` (`rg`), `fd` – Fast file search
@@ -42,14 +42,14 @@ docker run -it --rm -v ~/.pi:/home/node/.pi -v $(pwd):/work pi-alpine:latest
 Extensions are installed at container runtime (if not already present in `/home/node/.pi`):
 - `pi-hashline-readmap` – Hash‑anchored editing, structural file maps, symbol‑aware navigation
 - `pi-extmgr` – Extension manager
-- `npm:@juicesharp/rpiv-btw` – RPIV BTW extension
+- `pi-btw` – BTW extension
 - `npm:@heart-of-gold/toolkit` – Toolkit extension
 
 ## Customization
 
 Override Pi version at build time:
 ```bash
-docker build --build-arg PI_VERSION=0.72.0 -t pi-alpine:latest .
+docker build --build-arg PI_VERSION=0.75.5 -t pi-alpine:latest .
 ```
 
 Override default extensions at build time:
