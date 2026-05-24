@@ -1,5 +1,5 @@
 ARG PI_VERSION=0.75.5
-ARG EXTENSIONS="npm:pi-hashline-readmap npm:pi-btw npm:pi-smart-fetch npm:@heart-of-gold/toolkit npm:pi-extmgr"
+ARG EXTENSIONS="npm:pi-hashline-readmap npm:pi-btw npm:pi-smart-fetch git:github.com/gliptak/kitout npm:@heart-of-gold/toolkit npm:pi-extmgr"
 
 FROM node:22-alpine
 
