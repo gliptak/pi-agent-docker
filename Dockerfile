@@ -1,7 +1,7 @@
 ARG PI_VERSION=0.79.1
 ARG EXTENSIONS="npm:pi-hashline-readmap npm:pi-btw npm:pi-smart-fetch git:github.com/gliptak/kitout npm:@heart-of-gold/toolkit npm:pi-extmgr"
 
-FROM node:22-bookworm-slim
+FROM node:26-bookworm-slim
 
 ARG PI_VERSION
 ARG EXTENSIONS
